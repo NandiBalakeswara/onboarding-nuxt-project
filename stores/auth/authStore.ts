@@ -1,6 +1,5 @@
 // stores/authStore.ts
 import { defineStore } from 'pinia'
-import { useCookies } from '@vueuse/integrations/useCookies' // Menggunakan cookies
 import { useNuxtApp } from '#app'
 
 export const useAuthStore = defineStore('authStore', {
@@ -9,22 +8,31 @@ export const useAuthStore = defineStore('authStore', {
 
   getters: {
     isTokenSet() {
-      const token = useCookies().get('token')
-      return token !== null
+       const token = localStorage.getItem("token")
+       return token !== null;
     },
+    isRoleSet() {
+      const role = localStorage.getItem("role")
+      if (role !== null) {
+        return role;
+      }
+    }
   },
 
   actions: {
     async login(username: string, password: string) {
       const axiosInstance = useNuxtApp().$axios
-      const cookies = useCookies()
-
+  
+      console.log(username, password)
       try {
         const response = await axiosInstance.post('/login', { username, password })
         const { token, role } = response.data
+        console.log(response)
+        // Set token dan role di localStorage
+        localStorage.setItem('token', token)
+        localStorage.setItem('role', role)
 
-        // Set token dan role di state dan cookies
-        cookies.set('token', token, { path: '/', sameSite: 'strict' })
+        console.log(localStorage)
         return { status: response.data.status, role }
       } catch (error) {
         console.log(error.response?.data.message || 'Login failed')
@@ -51,15 +59,13 @@ export const useAuthStore = defineStore('authStore', {
 
     async logout() {
       const axiosInstance = useNuxtApp().$axios
-      const cookies = useCookies()
-
       try {
         await axiosInstance.post('/logout')
 
-        // Reset state dan hapus cookies
+        // Reset state dan hapus token dari localStorage
         this.$reset()
-        cookies.remove('token')
-        cookies.remove('role')
+        localStorage.removeItem('token')
+        localStorage.removeItem('role')
       } catch (error) {
         console.error('Logout error:', error)
       }

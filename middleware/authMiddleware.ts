@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
       console.log(token)
       // Jika tidak ada token, arahkan ke halaman login
       if (!token) {
-        return navigateTo('login');
+        return navigateTo('/login');
       }
     }
   });

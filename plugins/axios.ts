@@ -5,17 +5,22 @@ import { useCookies } from '@vueuse/integrations/useCookies'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const config = useRuntimeConfig()
-  const cookies = useCookies()
+  
 
   const axiosInstance = axios.create({
     baseURL: config.public.apiUrl,
     timeout: 60000,
-    headers: { accept: 'application/json' },
+    // withCredentials: true, // Mengizinkan pengiriman kredensial seperti cookie
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    },
   })
 
   axiosInstance.interceptors.request.use(
     (config) => {
-      const token = cookies.get('token')
+      const token = localStorage.getItem('token')
+      console.log(token)
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }

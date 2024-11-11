@@ -91,6 +91,9 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: "login"
+});
 import { ref } from 'vue';
 import {useAuthStore} from '~/stores/auth/authStore'; // Import store
 
