@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen bg-slate-50">
+  <div class="flex flex-row h-screen bg-slate-50">
     <!-- Bagian kiri: Gambar random -->
     <div class="w-1/2 hidden md:block">
       <img
@@ -130,7 +130,7 @@ const submitForm = async () => {
       }
       
     } else {
-      errorMessage.value = result.status; // Tampilkan error jika login gagal
+      errorMessage.value = result; // Tampilkan error jika login gagal
       username.value = '';
       password.value = '';
     }
@@ -139,6 +139,10 @@ const submitForm = async () => {
     const result = await authStore.register(name.value, email.value, username.value, password.value);
     if (result !== "success") {
       errorMessage.value = result; // Tampilkan error jika registrasi gagal
+      name.value = '';
+      email.value = '';
+      username.value = '';
+      password.value = '';
     } else {
       // Reset field setelah berhasil registrasi
       toggleForm(); // Kembali ke form login setelah registrasi

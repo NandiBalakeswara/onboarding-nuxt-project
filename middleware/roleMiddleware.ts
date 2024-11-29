@@ -1,4 +1,5 @@
 import { defineNuxtRouteMiddleware, navigateTo } from '#app';
+import { useAuthStore } from '~/stores/auth/authStore';
 
 export default defineNuxtRouteMiddleware((to) => {
   if (process.client) {
@@ -7,7 +8,8 @@ export default defineNuxtRouteMiddleware((to) => {
     const requiredRole = to.meta.requiredRole;
 
     if (role !== requiredRole) {
-      return navigateTo('/'); // Arahkan ke halaman jika role tidak sesuai
+      useAuthStore().logout();
+      return navigateTo('/login'); // Arahkan ke halaman jika role tidak sesuai
     }
   }
 });

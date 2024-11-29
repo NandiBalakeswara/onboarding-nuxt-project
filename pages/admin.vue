@@ -103,6 +103,7 @@ const fetchUsers = async () => {
   if (status === 'success') {
     // Update users hanya jika fetch berhasil
     users.value = adminStore.getUsers;
+    console.log("data users",users.value);
   } else {
     console.error('Failed to fetch users:', status);
   }

@@ -8,7 +8,10 @@
     <main v-if="role === 'Staff'" class="flex w-full">
       <!-- Sidebar dengan lebar 20% -->
       <aside class="w-[20%] min-w-[250px]">
-        <Sidebar />
+        <Sidebar 
+        :menu-navigasi="staffMenu"
+        title="Staff"
+        />
       </aside>
       
       <!-- Content area dengan lebar sisanya -->
@@ -31,6 +34,21 @@
   onMounted(() => {
     role.value = authStore.isRoleSet;
   });
+
+  const staffMenu = [
+  {
+    label: 'Book Type',
+    path: '/staff/book-type',
+  },
+  {
+    label: 'Product',
+    path: '/staff/product'
+  },
+  {
+    label: 'Booking',
+    path: '/staff/booking'
+  }
+];
 </script>
 
 <style scoped></style>
